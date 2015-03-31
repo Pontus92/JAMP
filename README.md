@@ -1,2 +1,0 @@
-# JAMP
-Projekt
