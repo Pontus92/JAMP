@@ -6,7 +6,7 @@ int counter = 1;
 if(counter){
 While(counter <= 10){
 >>>>>>> origin/master
-  System.out.println("Hey dude world");
+  System.out.println("Hey dude apple");
 }
 }
 
