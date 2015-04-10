@@ -15,6 +15,6 @@ int main(void)
     while(1)
     {
         //TODO:: Please write your application code 
-		vem e samir
+		ALLAHU AKBAR
     }
 }
