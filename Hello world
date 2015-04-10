@@ -1,6 +1,9 @@
-int counter = 0;
+int counter = 1;
 
+if(counter){
 While(counter <= 10){
   System.out.println("Hey dude world");
   counter++;
 }
+}
+
