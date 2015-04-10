@@ -1,9 +1,12 @@
+<<<<<<< HEAD
+While(1){
+=======
 int counter = 1;
 
 if(counter){
 While(counter <= 10){
+>>>>>>> origin/master
   System.out.println("Hey dude world");
-  counter++;
 }
 }
 
