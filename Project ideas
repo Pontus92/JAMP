@@ -1,10 +1,6 @@
-robot som känner igen en viss persons röst och ger ett visst svar beroende på vem som pratar (röstigenkäning)
-Ska kunna ge dem olika kommandon, beroende på kommandot kommer ett annat svar!
-Den ska också kunna ge olika svar på olika kommandon beroende på vem som beordrar den.
-
 Kan utveckla detta till att den ska kunna utföra saker t.ex du ber den att städa ett visst rum och den gör det. osv osv
 
 databas: lägga till kommandona för varje person och vilka svar som ska komma när de pratar osv
 
-Skapa röst igenkänning som känner igen om du säger huvud, ben, arm osv för att tända lampor på en liten gubbe vi har gjort 
-från "cardboard"
+Skapa röst kommado tolk som känner igen om du säger huvud, ben, arm osv för att tända lampor på en liten gubbe vi har gjort 
+från wellpapp.
