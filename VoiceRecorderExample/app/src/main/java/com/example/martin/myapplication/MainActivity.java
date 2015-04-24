@@ -1,4 +1,4 @@
-package compontus92jamp.httpsgithub.project;
+package com.example.martin.myapplication;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import java.util.List;
  * A very simple application to handle Voice Recognition intents
  * and display the results
  */
-public class VoiceRecognitionDemo extends Activity
+class VoiceRecognitionDemo extends Activity
 {
 
     private static final int REQUEST_CODE = 1234;
@@ -30,7 +30,7 @@ public class VoiceRecognitionDemo extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.voice_recog);
+        setContentView(R.layout.activity_main);
 
         Button speakButton = (Button) findViewById(R.id.speakButton);
 
