@@ -1,0 +1,39 @@
+sientific questions, frågor:
+Skriva nya frågor med mer innebörd. 
+frågor som frågar hur något kan hjälpa istället om det kan hjälpa. 
+
+voice recognition:
+Är ett jätte stort ämne och är intressant för att det finns mycket att 
+hitta och utveckla.  
+
+Mer objektiv syn på planen, och förklara lite varför vi ska göra sakerna vi gör.
+argumentera för att vårat projekt är bra och vidare tänkande. 
+
+I limitations kan vi länka en artikel som visar en annan board som är bättre för voice än våran.
+
+Mer akademiskt språk val när vi skriver plan + rapport.
+Skriva in i planen vilka sökord vi använde för att söka upp våra artiklar + förklara våra artiklar i mer detalj. m.m.
+
+Förklara varför vi har valt bort en del artiklar.
+
+expected result: 
+Se det i mer framtida utvecklings områden. 
+och förklara utförligt vilka områden som kan använda vårat projekt. 
+
+Dela in arbetet per person, någon tar hand om android och någon tar hand om databasen och någon tar hand om projektplanen.
+
+Grafical user interface? Tanken va att skapa en "kartong-gubbe" med lampor. 
+
+research bluetooth mellan telefon microkontrollern hur funkar detta? och hur ser det ut i java?
+
+arduino playground? lättare än atmel?
+
+20 timmar android 
+20 timmar databas
+2 timmar rapport/plan
+10 timmar grafical interface i android
+44 timmar android till arduino över bluetooth  
+
+Gör Xp lappar och planering i XP
+
+
