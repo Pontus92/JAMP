@@ -1,0 +1,107 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_toLeftOf="@+id/txtText"
+    android:id="@+id/LinearLayout"
+    android:background="#ff000000"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/btnSpeak"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/speak"
+        android:src="@android:drawable/ic_btn_speak_now"
+        android:background="#ffd40007" />
+
+    <Switch
+        android:layout_width="256dp"
+        android:layout_height="64dp"
+        android:text="Head"
+        android:textOff="Head Off"
+        android:textOn="Head On"
+        android:id="@+id/headSwitch"
+        android:checked="false"
+        android:textColor="#ffc10300"
+        android:background="#ff000000"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/test2"
+        android:clickable="false"
+        android:focusableInTouchMode="false" />
+
+    <Switch
+        android:layout_width="256dp"
+        android:layout_height="64dp"
+        android:text="Right Arm"
+        android:textOff="Right Arm Off"
+        android:textOn="Right Arm On"
+        android:id="@+id/rightArmSwitch"
+        android:checked="false"
+        android:textColor="#ffc10300"
+        android:background="#ff000000"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/test3"
+        android:clickable="false"/>
+
+    <Switch
+        android:layout_width="256dp"
+        android:layout_height="64dp"
+        android:text="Left Arm"
+        android:textOff="Left Arm Off"
+        android:textOn="Left Arm On"
+        android:id="@+id/leftArmSwitch"
+        android:checked="false"
+        android:textColor="#ffc10300"
+        android:background="#ff000000"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/test4"
+        android:clickable="false"/>
+
+    <Switch
+        android:layout_width="256dp"
+        android:layout_height="64dp"
+        android:text="Right Leg"
+        android:textOff="Right Leg Off"
+        android:textOn="Right Leg On"
+        android:id="@+id/rightLegSwitch"
+        android:checked="false"
+        android:textColor="#ffc10300"
+        android:background="#ff000000"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/test5"
+        android:clickable="false"/>
+
+    <Switch
+        android:layout_width="256dp"
+        android:layout_height="64dp"
+        android:text="Left Leg"
+        android:textOff="Left Leg Off"
+        android:textOn="Left Leg On"
+        android:id="@+id/leftLegSwitch"
+        android:checked="false"
+        android:textColor="#ffc10300"
+        android:background="#ff000000"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/test6"
+        android:clickable="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffffff" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect Bluetooth"
+        android:id="@+id/bluetoothButton"
+        android:layout_gravity="bottom|center_horizontal"/>
+
+</LinearLayout>
