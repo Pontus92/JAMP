@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 
     private BluetoothArduino mBlue;
 
+
     //private LogDatabase myDb;
 
     private int lOn = 0;
