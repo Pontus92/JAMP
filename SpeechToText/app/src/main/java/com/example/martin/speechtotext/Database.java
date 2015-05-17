@@ -5,23 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
-import java.util.Random;
 
 
 public class Database extends ListActivity {
 
     private BodypartsDataSource body;
 
+    public Database(){
+        body = new BodypartsDataSource(this);
+        body.open();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database);
-
-        body = new BodypartsDataSource(this);
 
         List<Bodypart> values = body.getAllBodyparts();
 
@@ -32,13 +33,12 @@ public class Database extends ListActivity {
         setListAdapter(adapter);
     }
 
-    public void add(String bPart){
+    public void add(String bodypart){
         ArrayAdapter<Bodypart> adapter = (ArrayAdapter<Bodypart>) getListAdapter();
-        Bodypart bodypart = null;
 
         // save the new comment to the database
-        bodypart = body.createBodypart(bPart);
-        adapter.add(bodypart);
+        Bodypart newBodypart = body.createBodypart(bodypart);
+        adapter.add(newBodypart);
 
         adapter.notifyDataSetChanged();
     }

@@ -35,7 +35,9 @@ public class MainActivity extends Activity {
 
     private BluetoothArduino mBlue;
 
-    private Database myDb;
+    //private Database myDb;
+
+    //private BodypartsDataSource body;
 
     private int lOn = 0;
     private int lOff = 0;
@@ -49,6 +51,11 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //myDb = new Database();
+        /*
+        body = new BodypartsDataSource(this);
+        body.open();*/
 
         mBlue = BluetoothArduino.getInstance("ExampleRobot");
 
@@ -136,7 +143,7 @@ public class MainActivity extends Activity {
 
                     if(txtText.getText().equals("lights on")) {
                         lOn = lOn + 1;
-                        myDb.add("lights on");
+                        //myDb.add("lights on");
                         head.setChecked(true);
                         leftArm.setChecked(true);
                         rightArm.setChecked(true);
@@ -145,7 +152,7 @@ public class MainActivity extends Activity {
                         mBlue.sendMessage("lights on");
                     }else if(txtText.getText().equals("lights off")) {
                         lOff = lOff + 1;
-                        myDb.add("lights off");
+                        //myDb.add("lights off");
                         head.setChecked(false);
                         leftArm.setChecked(false);
                         rightArm.setChecked(false);
@@ -154,27 +161,27 @@ public class MainActivity extends Activity {
                         mBlue.sendMessage("lights off");
                     }else if(txtText.getText().equals("head")){
                         h = h + 1;
-                        myDb.add("head");
+                        //myDb.add("head");
                         switchOn(head);
                         mBlue.sendMessage("head");
                     }else if(txtText.getText().equals("left arm")){
                         la = la + 1;
-                        myDb.add("left arm");
+                        //myDb.add("left arm");
                         switchOn(leftArm);
                         mBlue.sendMessage("left arm");
                     }else if(txtText.getText().equals("right arm")){
                         ra = ra + 1;
-                        myDb.add("right arm");
+                        //myDb.add("right arm");
                         switchOn(rightArm);
                         mBlue.sendMessage("right arm");
                     }else if(txtText.getText().equals("left leg")){
                         ll = ll + 1;
-                        myDb.add("left leg");
+                        //myDb.add("left leg");
                         switchOn(leftLeg);
                         mBlue.sendMessage("left leg");
                     }else if(txtText.getText().equals("right leg")){
                         rl = rl + 1;
-                        myDb.add("right leg");
+                        //myDb.add("right leg");
                         switchOn(rightLeg);
                         mBlue.sendMessage("right leg");
                     }

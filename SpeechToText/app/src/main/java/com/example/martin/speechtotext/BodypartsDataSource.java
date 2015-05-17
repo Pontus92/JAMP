@@ -33,19 +33,18 @@ public class BodypartsDataSource {
 
     public Bodypart createBodypart(String bodypart) {
         ContentValues values = new ContentValues();
+
         values.put(MySQLiteHelper.COLUMN_BODYPART, bodypart);
-        long insertId = database.insert(MySQLiteHelper.TABLE_BODYPARTS, null,
-                values);
-        long insertUsed = database.insert(MySQLiteHelper.TABLE_BODYPARTS, null,
-                values);
+
+        long insertId = database.insert(MySQLiteHelper.TABLE_BODYPARTS, null, values);
+
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BODYPARTS,
-                allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId +
-                        MySQLiteHelper.COLUMN_USED + " = " + insertUsed,
+                allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId,
                 null, null, null, null);
         cursor.moveToFirst();
-        Bodypart newBodypart = cursorToBodypart(cursor);
+        Bodypart newBodyPart = cursorToBodypart(cursor);
         cursor.close();
-        return newBodypart;
+        return newBodyPart;
     }
 
     public List<Bodypart> getAllBodyparts() {

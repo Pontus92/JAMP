@@ -20,7 +20,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + TABLE_BODYPARTS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_BODYPART
             + " text not null, " + COLUMN_USED
-            + " integer not null);";
+            + " integer);";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
