@@ -39,8 +39,9 @@ public class BodypartsDataSource {
         long insertUsed = database.insert(MySQLiteHelper.TABLE_BODYPARTS, null,
                 values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BODYPARTS,
-                allColumns, MySQLiteHelper.COLUMN_ID,
-                + " = " + insertId, MySQLiteHelper.COLUMN_USED + " = " +  insertUsed, null, null);
+                allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId +
+                        MySQLiteHelper.COLUMN_USED + " = " + insertUsed,
+                null, null, null, null);
         cursor.moveToFirst();
         Bodypart newBodypart = cursorToBodypart(cursor);
         cursor.close();
@@ -64,7 +65,7 @@ public class BodypartsDataSource {
         return bodyparts;
     }
 
-    private Bodypart  cursorToBodypart(Cursor cursor) {
+    private Bodypart cursorToBodypart(Cursor cursor) {
         Bodypart bodypart = new Bodypart();
         bodypart.setId(cursor.getLong(0));
         bodypart.setBodypart(cursor.getString(1));

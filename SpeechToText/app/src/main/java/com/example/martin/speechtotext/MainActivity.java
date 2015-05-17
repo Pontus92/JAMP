@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -34,8 +35,7 @@ public class MainActivity extends Activity {
 
     private BluetoothArduino mBlue;
 
-
-    //private LogDatabase myDb;
+    private Database myDb;
 
     private int lOn = 0;
     private int lOff = 0;
@@ -49,8 +49,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //myDb = new LogDatabase(this);
 
         mBlue = BluetoothArduino.getInstance("ExampleRobot");
 
@@ -111,6 +109,17 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, Database.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected synchronized void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -127,7 +136,7 @@ public class MainActivity extends Activity {
 
                     if(txtText.getText().equals("lights on")) {
                         lOn = lOn + 1;
-                        //myDb.increment("lights on", lOn);
+                        myDb.add("lights on");
                         head.setChecked(true);
                         leftArm.setChecked(true);
                         rightArm.setChecked(true);
@@ -136,7 +145,7 @@ public class MainActivity extends Activity {
                         mBlue.sendMessage("lights on");
                     }else if(txtText.getText().equals("lights off")) {
                         lOff = lOff + 1;
-                        //myDb.increment("lights off", lOff);
+                        myDb.add("lights off");
                         head.setChecked(false);
                         leftArm.setChecked(false);
                         rightArm.setChecked(false);
@@ -145,27 +154,27 @@ public class MainActivity extends Activity {
                         mBlue.sendMessage("lights off");
                     }else if(txtText.getText().equals("head")){
                         h = h + 1;
-                        //myDb.increment("head", h);
+                        myDb.add("head");
                         switchOn(head);
                         mBlue.sendMessage("head");
                     }else if(txtText.getText().equals("left arm")){
                         la = la + 1;
-                        //myDb.increment("left arm", la);
+                        myDb.add("left arm");
                         switchOn(leftArm);
                         mBlue.sendMessage("left arm");
                     }else if(txtText.getText().equals("right arm")){
                         ra = ra + 1;
-                        //myDb.increment("right arm", ra);
+                        myDb.add("right arm");
                         switchOn(rightArm);
                         mBlue.sendMessage("right arm");
                     }else if(txtText.getText().equals("left leg")){
                         ll = ll + 1;
-                        //myDb.increment("left leg", ll);
+                        myDb.add("left leg");
                         switchOn(leftLeg);
                         mBlue.sendMessage("left leg");
                     }else if(txtText.getText().equals("right leg")){
                         rl = rl + 1;
-                        //myDb.increment("right leg", rl);
+                        myDb.add("right leg");
                         switchOn(rightLeg);
                         mBlue.sendMessage("right leg");
                     }
