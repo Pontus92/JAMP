@@ -1,0 +1,16 @@
+Möte 2 
+48 timmar tills nästa möte.
+Dela upp detta så vi hinner med det vi vill.
+
+20 timmar bluetooth 
+20 timmar databas
+8 timmar arduino
+
+sharedpreferences? till databasen om en aktivitet kan skicka data till en annan.
+(http://developer.android.com/reference/android/content/SharedPreferences.html)
+
+Skicka rapport till grupp "E".
+Och ge feedback till "Jaac" på deras rapport.
+
+Powerpoint till redovisningen.
+
