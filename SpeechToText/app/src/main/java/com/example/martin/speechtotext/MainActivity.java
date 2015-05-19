@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -16,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.database.sqlite.SQLiteDatabase;
 
 public class MainActivity extends Activity {
 
@@ -31,13 +35,11 @@ public class MainActivity extends Activity {
 
     private TextView txtText;
 
-    private Button blueButton;
+    private Button databaseBtn;
 
     private BluetoothArduino mBlue;
 
-    //private Database myDb;
-
-    //private BodypartsDataSource body;
+    private SQLiteDatabase db;
 
     private int lOn = 0;
     private int lOff = 0;
@@ -46,18 +48,14 @@ public class MainActivity extends Activity {
     private int la = 0;
     private int rl = 0;
     private int ll = 0;
+    private int i = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //myDb = new Database();
-        /*
-        body = new BodypartsDataSource(this);
-        body.open();*/
-
-        mBlue = BluetoothArduino.getInstance("ExampleRobot");
+        //mBlue = BluetoothArduino.getInstance("ExampleRobot");
 
         head = (Switch) findViewById(R.id.headSwitch);
         leftArm = (Switch) findViewById(R.id.leftArmSwitch);
@@ -67,17 +65,33 @@ public class MainActivity extends Activity {
 
         txtText = (TextView) findViewById(R.id.textView);
 
-        blueButton = (Button) findViewById(R.id.bluetoothButton);
+        databaseBtn = (Button) findViewById(R.id.databaseButton);
 
-        blueButton.setOnClickListener(new View.OnClickListener() {
+        db = openOrCreateDatabase("SpeechToText.db", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS bodyparts(id integer," +
+                "bodypart VARCHAR,used integer);");
+
+        db.execSQL("INSERT INTO bodyparts VALUES('"+1+
+                "', '"+"lights on"+"', '"+lOn+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+2+
+                "', '"+"lights off"+"', '"+lOff+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+3+
+                "', '"+"head"+"', '"+h+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+4+
+                "', '"+"left arm"+"', '"+la+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+5+
+                "', '"+"right arm"+"', '"+ra+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+6+
+                "', '"+"left leg"+"', '"+ll+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+7+
+                "', '"+"right leg"+"', '"+rl+"');");
+
+
+        databaseBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if(mBlue.Connect()){
-                    txtText.setText("Connected to Arduino");
-                }else{
-                    txtText.setText("Error in connecting to Arduino");
-                }
+                showDatabase();
             }
         });
 
@@ -106,7 +120,6 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
     }
 
     @Override
@@ -119,8 +132,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, Database.class);
-            startActivity(intent);
+            showDatabase();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -139,56 +151,101 @@ public class MainActivity extends Activity {
 
                     txtText.setText(text.get(0));
 
-
-
                     if(txtText.getText().equals("lights on")) {
+                        i = 1;
                         lOn = lOn + 1;
-                        //myDb.add("lights on");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"lights on"+"',used='"+lOn+
+                                "' WHERE id='"+i+"'");
+
                         head.setChecked(true);
                         leftArm.setChecked(true);
                         rightArm.setChecked(true);
                         leftLeg.setChecked(true);
                         rightLeg.setChecked(true);
-                        mBlue.sendMessage("lights on");
+                        //mBlue.sendMessage("lights on");
                     }else if(txtText.getText().equals("lights off")) {
+                        i = 2;
                         lOff = lOff + 1;
-                        //myDb.add("lights off");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"lights off"+"',used='"+lOff+
+                                "' WHERE id='"+i+"'");
+
                         head.setChecked(false);
                         leftArm.setChecked(false);
                         rightArm.setChecked(false);
                         leftLeg.setChecked(false);
                         rightLeg.setChecked(false);
-                        mBlue.sendMessage("lights off");
+                        //mBlue.sendMessage("lights off");
                     }else if(txtText.getText().equals("head")){
+                        i = 3;
                         h = h + 1;
-                        //myDb.add("head");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"head"+"',used='"+h+
+                                "' WHERE id='"+i+"'");
+
                         switchOn(head);
-                        mBlue.sendMessage("head");
+                        //mBlue.sendMessage("head");
                     }else if(txtText.getText().equals("left arm")){
+                        i = 4;
                         la = la + 1;
-                        //myDb.add("left arm");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"left arm"+"',used='"+la+
+                                "' WHERE id='"+i+"'");
+
                         switchOn(leftArm);
-                        mBlue.sendMessage("left arm");
+                        //mBlue.sendMessage("left arm");
                     }else if(txtText.getText().equals("right arm")){
+                        i = 5;
                         ra = ra + 1;
-                        //myDb.add("right arm");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"right arm"+"',used='"+ra+
+                                "' WHERE id='"+i+"'");
+
                         switchOn(rightArm);
-                        mBlue.sendMessage("right arm");
+                        //mBlue.sendMessage("right arm");
                     }else if(txtText.getText().equals("left leg")){
+                        i = 6;
                         ll = ll + 1;
-                        //myDb.add("left leg");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"left leg"+"',used='"+ll+
+                                "' WHERE id='"+i+"'");
+
                         switchOn(leftLeg);
-                        mBlue.sendMessage("left leg");
+                        //mBlue.sendMessage("left leg");
                     }else if(txtText.getText().equals("right leg")){
+                        i = 7;
                         rl = rl + 1;
-                        //myDb.add("right leg");
+                        db.execSQL("UPDATE bodyparts SET bodypart='"+"right leg"+"',used='"+rl+
+                                "' WHERE id='"+i+"'");
+
                         switchOn(rightLeg);
-                        mBlue.sendMessage("right leg");
+                        //mBlue.sendMessage("right leg");
                     }
                 }
                 break;
             }
         }
+    }
+
+    public void showDatabase(){
+        Cursor c=db.rawQuery("SELECT * FROM bodyparts", null);
+        if(c.getCount()==0)
+        {
+            showMessage("Error", "No records found");
+            return;
+        }
+        StringBuffer buffer=new StringBuffer();
+        while(c.moveToNext())
+        {
+            buffer.append("Id: "+c.getString(0)+"\n");
+            buffer.append("Bodypart: "+c.getString(1)+"\n");
+            buffer.append("Used: "+c.getString(2)+"\n\n");
+        }
+        showMessage("Bodypart Details", buffer.toString());
+    }
+
+    public void showMessage(String title,String message)
+    {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
     }
 
     private void switchOn(View v){
