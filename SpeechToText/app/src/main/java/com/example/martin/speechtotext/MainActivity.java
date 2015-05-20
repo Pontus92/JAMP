@@ -259,7 +259,8 @@ public class MainActivity extends Activity {
         showMessage("Bodypart Details", buffer.toString());
     }
 
-    public void showMessage(String title,String message) {
+    public void showMessage(String title,String message)
+    {
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle(title);
