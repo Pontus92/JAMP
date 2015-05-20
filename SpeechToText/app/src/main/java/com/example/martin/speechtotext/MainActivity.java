@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
     private Button blueBtn;
 
     private BluetoothArduino mBlue;
+    private Intent btActivity;
 
     private SQLiteDatabase db;
 
@@ -86,16 +87,13 @@ public class MainActivity extends Activity {
         db.execSQL("INSERT INTO bodyparts VALUES('"+7+
                 "', '"+"right leg"+"', '"+rl+"');");
 
+        btActivity = new Intent(this, Main_Bluetooth.class);
 
         blueBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if(mBlue.Connect()){
-                    txtText.setText("Connected to Arduino");
-                }else{
-                    txtText.setText("Error in connecting to Arduino");
-                };
+                startActivity(btActivity);
             }
         });
 
@@ -125,6 +123,7 @@ public class MainActivity extends Activity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

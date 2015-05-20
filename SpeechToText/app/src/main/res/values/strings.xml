@@ -6,4 +6,6 @@
     <string name="speak">Speak</string>
     <string name="title_activity_database">Database</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_main__bluetooth">Main_Bluetooth</string>
+    <string name="hello">hello</string>
 </resources>
