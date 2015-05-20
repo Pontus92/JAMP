@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,8 +31,6 @@ public class Main_Bluetooth extends Activity {
     Button btnScanDevice;
     TextView stateBluetooth;
     BluetoothAdapter bluetoothAdapter;
-
-    BluetoothArduino mBlue;
 
     ArrayAdapter<String> btArrayAdapter;
     ListItemClicked listItemClicked;
@@ -158,6 +157,13 @@ public class Main_Bluetooth extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*@Override
+    public void onBackPressed() {
+        Intent goToMain = new Intent(this,MainActivity.class);
+        goToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goToMain);
+    }*/
+
     class ListItemClicked implements OnItemClickListener
     {
         @Override
@@ -166,16 +172,21 @@ public class Main_Bluetooth extends Activity {
             bdDevice = arrayListBluetoothDevices.get(position);
             //bdClass = arrayListBluetoothDevices.get(position);
             Log.i("Log", "The device : " + bdDevice.toString());
+            Intent _result = new Intent();
+            _result.setData(Uri.parse(bdDevice.toString()));
+            setResult(RESULT_OK, _result);
+            finish();
+            //onBackPressed();
             /*
              * here below we can do pairing without calling the callthread(), we can directly call the
              * connect(). but for the safer side we must usethe threading object.
              */
-            mBlue = BluetoothArduino.getInstance(bdDevice.toString());
+            /*mBlue = BluetoothArduino.getInstance(bdDevice.toString());
             if(mBlue.Connect()) {
                 Log.i("Log", "The bond is created");
             }else{
                 Log.i("Log", "Couldn't connect to: " + bdDevice.toString());
-            }
+            }*/
         }
     }
 }

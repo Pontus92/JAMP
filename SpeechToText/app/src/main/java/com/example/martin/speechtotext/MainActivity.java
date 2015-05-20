@@ -9,8 +9,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +52,8 @@ public class MainActivity extends Activity {
     private int rl = 0;
     private int ll = 0;
     private int i = 1;
+
+    private String device;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                startActivity(btActivity);
+                startActivityForResult(btActivity, 2);
             }
         });
 
@@ -139,86 +143,100 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void btDevice(String device){
+        txtText.setText(device);
+        mBlue = BluetoothArduino.getInstance(device);
+    }
+
     @Override
     protected synchronized void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case RESULT_SPEECH: {
-                if (resultCode == RESULT_OK && null != data) {
+        device = data.getDataString();
 
-                    ArrayList<String> text = data.
-                            getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        if(requestCode == 2){
+            if(resultCode == RESULT_OK) {
+                Log.i("Log", "Device recieved: " + device);
+                btDevice(device);
+            }
+        }else {
+            switch (requestCode) {
+                case RESULT_SPEECH: {
+                    if (resultCode == RESULT_OK && null != data) {
 
-                    txtText.setText(text.get(0));
+                        ArrayList<String> text = data.
+                                getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-                    if(txtText.getText().equals("lights on")) {
-                        i = 1;
-                        lOn = lOn + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"lights on"+"',used='"+lOn+
-                                "' WHERE id='"+i+"'");
+                        txtText.setText(text.get(0));
 
-                        head.setChecked(true);
-                        leftArm.setChecked(true);
-                        rightArm.setChecked(true);
-                        leftLeg.setChecked(true);
-                        rightLeg.setChecked(true);
-                        mBlue.sendMessage("lights on");
-                    }else if(txtText.getText().equals("lights off")) {
-                        i = 2;
-                        lOff = lOff + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"lights off"+"',used='"+lOff+
-                                "' WHERE id='"+i+"'");
+                        if (txtText.getText().equals("lights on")) {
+                            i = 1;
+                            lOn = lOn + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "lights on" + "',used='" + lOn +
+                                    "' WHERE id='" + i + "'");
 
-                        head.setChecked(false);
-                        leftArm.setChecked(false);
-                        rightArm.setChecked(false);
-                        leftLeg.setChecked(false);
-                        rightLeg.setChecked(false);
-                        mBlue.sendMessage("lights off");
-                    }else if(txtText.getText().equals("head")){
-                        i = 3;
-                        h = h + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"head"+"',used='"+h+
-                                "' WHERE id='"+i+"'");
+                            head.setChecked(true);
+                            leftArm.setChecked(true);
+                            rightArm.setChecked(true);
+                            leftLeg.setChecked(true);
+                            rightLeg.setChecked(true);
+                            mBlue.sendMessage("lights on");
+                        } else if (txtText.getText().equals("lights off")) {
+                            i = 2;
+                            lOff = lOff + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "lights off" + "',used='" + lOff +
+                                    "' WHERE id='" + i + "'");
 
-                        switchOn(head);
-                        mBlue.sendMessage("head");
-                    }else if(txtText.getText().equals("left arm")){
-                        i = 4;
-                        la = la + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"left arm"+"',used='"+la+
-                                "' WHERE id='"+i+"'");
+                            head.setChecked(false);
+                            leftArm.setChecked(false);
+                            rightArm.setChecked(false);
+                            leftLeg.setChecked(false);
+                            rightLeg.setChecked(false);
+                            mBlue.sendMessage("lights off");
+                        } else if (txtText.getText().equals("head")) {
+                            i = 3;
+                            h = h + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "head" + "',used='" + h +
+                                    "' WHERE id='" + i + "'");
 
-                        switchOn(leftArm);
-                        mBlue.sendMessage("left arm");
-                    }else if(txtText.getText().equals("right arm")){
-                        i = 5;
-                        ra = ra + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"right arm"+"',used='"+ra+
-                                "' WHERE id='"+i+"'");
+                            switchOn(head);
+                            mBlue.sendMessage("head");
+                        } else if (txtText.getText().equals("left arm")) {
+                            i = 4;
+                            la = la + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "left arm" + "',used='" + la +
+                                    "' WHERE id='" + i + "'");
 
-                        switchOn(rightArm);
-                        mBlue.sendMessage("right arm");
-                    }else if(txtText.getText().equals("left leg")){
-                        i = 6;
-                        ll = ll + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"left leg"+"',used='"+ll+
-                                "' WHERE id='"+i+"'");
+                            switchOn(leftArm);
+                            mBlue.sendMessage("left arm");
+                        } else if (txtText.getText().equals("right arm")) {
+                            i = 5;
+                            ra = ra + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "right arm" + "',used='" + ra +
+                                    "' WHERE id='" + i + "'");
 
-                        switchOn(leftLeg);
-                        mBlue.sendMessage("left leg");
-                    }else if(txtText.getText().equals("right leg")){
-                        i = 7;
-                        rl = rl + 1;
-                        db.execSQL("UPDATE bodyparts SET bodypart='"+"right leg"+"',used='"+rl+
-                                "' WHERE id='"+i+"'");
+                            switchOn(rightArm);
+                            mBlue.sendMessage("right arm");
+                        } else if (txtText.getText().equals("left leg")) {
+                            i = 6;
+                            ll = ll + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "left leg" + "',used='" + ll +
+                                    "' WHERE id='" + i + "'");
 
-                        switchOn(rightLeg);
-                        mBlue.sendMessage("right leg");
+                            switchOn(leftLeg);
+                            mBlue.sendMessage("left leg");
+                        } else if (txtText.getText().equals("right leg")) {
+                            i = 7;
+                            rl = rl + 1;
+                            db.execSQL("UPDATE bodyparts SET bodypart='" + "right leg" + "',used='" + rl +
+                                    "' WHERE id='" + i + "'");
+
+                            switchOn(rightLeg);
+                            mBlue.sendMessage("right leg");
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
     }
