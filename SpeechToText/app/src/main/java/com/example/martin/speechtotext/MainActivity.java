@@ -9,15 +9,19 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -74,21 +78,6 @@ public class MainActivity extends Activity {
         db.execSQL("CREATE TABLE IF NOT EXISTS bodyparts(id integer," +
                 "bodypart VARCHAR,used integer);");
 
-        db.execSQL("INSERT INTO bodyparts VALUES('"+1+
-                "', '"+"lights on"+"', '"+lOn+"');");
-        db.execSQL("INSERT INTO bodyparts VALUES('"+2+
-                "', '"+"lights off"+"', '"+lOff+"');");
-        db.execSQL("INSERT INTO bodyparts VALUES('"+3+
-                "', '"+"head"+"', '"+h+"');");
-        db.execSQL("INSERT INTO bodyparts VALUES('"+4+
-                "', '"+"left arm"+"', '"+la+"');");
-        db.execSQL("INSERT INTO bodyparts VALUES('"+5+
-                "', '"+"right arm"+"', '"+ra+"');");
-        db.execSQL("INSERT INTO bodyparts VALUES('"+6+
-                "', '"+"left leg"+"', '"+ll+"');");
-        db.execSQL("INSERT INTO bodyparts VALUES('"+7+
-                "', '"+"right leg"+"', '"+rl+"');");
-
         btActivity = new Intent(this, Main_Bluetooth.class);
 
         blueBtn.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +115,24 @@ public class MainActivity extends Activity {
         });
     }
 
+    public void onStart(){
+        super.onStart();
+        db.execSQL("INSERT INTO bodyparts VALUES('"+1+
+                "', '"+"lights on"+"', '"+lOn+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+2+
+                "', '"+"lights off"+"', '"+lOff+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+3+
+                "', '"+"head"+"', '"+h+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+4+
+                "', '"+"left arm"+"', '"+la+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+5+
+                "', '"+"right arm"+"', '"+ra+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+6+
+                "', '"+"left leg"+"', '"+ll+"');");
+        db.execSQL("INSERT INTO bodyparts VALUES('"+7+
+                "', '"+"right leg"+"', '"+rl+"');");
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,6 +153,36 @@ public class MainActivity extends Activity {
     public void btDevice(String device){
         txtText.setText(device);
         mBlue = BluetoothArduino.getInstance(device);
+        mBlue.Connect();
+        final ViewGroup layout = (ViewGroup) blueBtn.getParent();
+        if(layout != null){
+            layout.removeView(blueBtn);
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER_HORIZONTAL;
+        final TextView btStatus = new TextView(this);
+        layout.addView(btStatus, lp);
+        btStatus.setText("Connected");
+        btStatus.setTextColor(Color.WHITE);
+
+        final Button dcButton = new Button(this);
+        layout.addView(dcButton, lp);
+        dcButton.setText("Disconnect");
+
+        dcButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(layout != null){
+                    layout.removeView(btStatus);
+                    layout.removeView(dcButton);
+                    layout.addView(blueBtn);
+                }
+            }
+        });
+        //blueBtn.setText("Connected");
+        //blueBtn.setClickable(false);
     }
 
     @Override
@@ -195,42 +232,47 @@ public class MainActivity extends Activity {
                             mBlue.sendMessage("lights off");
                         } else if (txtText.getText().equals("head")) {
                             i = 3;
-                            h = h + 1;
-                            db.execSQL("UPDATE bodyparts SET bodypart='" + "head" + "',used='" + h +
-                                    "' WHERE id='" + i + "'");
-
+                            if(!head.isChecked()) {
+                                h = h + 1;
+                                db.execSQL("UPDATE bodyparts SET bodypart='" + "head" + "',used='" + h +
+                                        "' WHERE id='" + i + "'");
+                            }
                             switchOn(head);
                             mBlue.sendMessage("head");
                         } else if (txtText.getText().equals("left arm")) {
                             i = 4;
-                            la = la + 1;
-                            db.execSQL("UPDATE bodyparts SET bodypart='" + "left arm" + "',used='" + la +
-                                    "' WHERE id='" + i + "'");
-
+                            if(!leftArm.isChecked()) {
+                                la = la + 1;
+                                db.execSQL("UPDATE bodyparts SET bodypart='" + "left arm" + "',used='" + la +
+                                        "' WHERE id='" + i + "'");
+                            }
                             switchOn(leftArm);
                             mBlue.sendMessage("left arm");
                         } else if (txtText.getText().equals("right arm")) {
                             i = 5;
-                            ra = ra + 1;
-                            db.execSQL("UPDATE bodyparts SET bodypart='" + "right arm" + "',used='" + ra +
-                                    "' WHERE id='" + i + "'");
-
+                            if(!rightArm.isChecked()) {
+                                ra = ra + 1;
+                                db.execSQL("UPDATE bodyparts SET bodypart='" + "right arm" + "',used='" + ra +
+                                        "' WHERE id='" + i + "'");
+                            }
                             switchOn(rightArm);
                             mBlue.sendMessage("right arm");
                         } else if (txtText.getText().equals("left leg")) {
                             i = 6;
-                            ll = ll + 1;
-                            db.execSQL("UPDATE bodyparts SET bodypart='" + "left leg" + "',used='" + ll +
-                                    "' WHERE id='" + i + "'");
-
+                            if(!leftLeg.isChecked()) {
+                                ll = ll + 1;
+                                db.execSQL("UPDATE bodyparts SET bodypart='" + "left leg" + "',used='" + ll +
+                                        "' WHERE id='" + i + "'");
+                            }
                             switchOn(leftLeg);
                             mBlue.sendMessage("left leg");
                         } else if (txtText.getText().equals("right leg")) {
                             i = 7;
-                            rl = rl + 1;
-                            db.execSQL("UPDATE bodyparts SET bodypart='" + "right leg" + "',used='" + rl +
-                                    "' WHERE id='" + i + "'");
-
+                            if(!rightLeg.isChecked()) {
+                                rl = rl + 1;
+                                db.execSQL("UPDATE bodyparts SET bodypart='" + "right leg" + "',used='" + rl +
+                                        "' WHERE id='" + i + "'");
+                            }
                             switchOn(rightLeg);
                             mBlue.sendMessage("right leg");
                         }
@@ -244,6 +286,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop(){
         super.onStop();
+        try {
+            db.delete("bodyparts", null, null);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     //Fires after the OnStop() state

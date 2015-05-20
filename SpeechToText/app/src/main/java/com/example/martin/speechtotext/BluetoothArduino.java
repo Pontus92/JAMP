@@ -60,7 +60,7 @@ public class BluetoothArduino extends Thread {
             Set<BluetoothDevice> paired = mBlueAdapter.getBondedDevices();
             if (paired.size() > 0) {
                 for (BluetoothDevice d : paired) {
-                    if (d.getName().equals(robotName)) {
+                    if (d.getAddress().equals(robotName)) {
                         mBlueRobo = d;
                         robotFound = true;
                         break;
@@ -69,7 +69,7 @@ public class BluetoothArduino extends Thread {
             }
             
             if (!robotFound)
-                LogError("\t\t[#]There is not robot paired!!");
+                LogError("\t\t[#]There is no device paired!!");
 
         }catch (Exception e){
             LogError("\t\t[#]Error creating Bluetooth! : " + e.getMessage());
