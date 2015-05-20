@@ -99,8 +99,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Database"
-        android:id="@+id/databaseButton"
+        android:text="Connect to Bluetooth"
+        android:id="@+id/bluetoothButton"
         android:layout_gravity="bottom|center_horizontal"/>
 
 </LinearLayout>

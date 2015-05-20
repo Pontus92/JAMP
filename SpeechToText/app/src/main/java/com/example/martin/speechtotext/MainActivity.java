@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 
     private TextView txtText;
 
-    private Button databaseBtn;
+    private Button blueBtn;
 
     private BluetoothArduino mBlue;
 
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //mBlue = BluetoothArduino.getInstance("ExampleRobot");
+        mBlue = BluetoothArduino.getInstance("ExampleRobot");
 
         head = (Switch) findViewById(R.id.headSwitch);
         leftArm = (Switch) findViewById(R.id.leftArmSwitch);
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 
         txtText = (TextView) findViewById(R.id.textView);
 
-        databaseBtn = (Button) findViewById(R.id.databaseButton);
+        blueBtn = (Button) findViewById(R.id.bluetoothButton);
 
         db = openOrCreateDatabase("SpeechToText.db", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS bodyparts(id integer," +
@@ -87,11 +87,15 @@ public class MainActivity extends Activity {
                 "', '"+"right leg"+"', '"+rl+"');");
 
 
-        databaseBtn.setOnClickListener(new View.OnClickListener() {
+        blueBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                showDatabase();
+                if(mBlue.Connect()){
+                    txtText.setText("Connected to Arduino");
+                }else{
+                    txtText.setText("Error in connecting to Arduino");
+                };
             }
         });
 
@@ -162,7 +166,7 @@ public class MainActivity extends Activity {
                         rightArm.setChecked(true);
                         leftLeg.setChecked(true);
                         rightLeg.setChecked(true);
-                        //mBlue.sendMessage("lights on");
+                        mBlue.sendMessage("lights on");
                     }else if(txtText.getText().equals("lights off")) {
                         i = 2;
                         lOff = lOff + 1;
@@ -174,7 +178,7 @@ public class MainActivity extends Activity {
                         rightArm.setChecked(false);
                         leftLeg.setChecked(false);
                         rightLeg.setChecked(false);
-                        //mBlue.sendMessage("lights off");
+                        mBlue.sendMessage("lights off");
                     }else if(txtText.getText().equals("head")){
                         i = 3;
                         h = h + 1;
@@ -182,7 +186,7 @@ public class MainActivity extends Activity {
                                 "' WHERE id='"+i+"'");
 
                         switchOn(head);
-                        //mBlue.sendMessage("head");
+                        mBlue.sendMessage("head");
                     }else if(txtText.getText().equals("left arm")){
                         i = 4;
                         la = la + 1;
@@ -190,7 +194,7 @@ public class MainActivity extends Activity {
                                 "' WHERE id='"+i+"'");
 
                         switchOn(leftArm);
-                        //mBlue.sendMessage("left arm");
+                        mBlue.sendMessage("left arm");
                     }else if(txtText.getText().equals("right arm")){
                         i = 5;
                         ra = ra + 1;
@@ -198,7 +202,7 @@ public class MainActivity extends Activity {
                                 "' WHERE id='"+i+"'");
 
                         switchOn(rightArm);
-                        //mBlue.sendMessage("right arm");
+                        mBlue.sendMessage("right arm");
                     }else if(txtText.getText().equals("left leg")){
                         i = 6;
                         ll = ll + 1;
@@ -206,7 +210,7 @@ public class MainActivity extends Activity {
                                 "' WHERE id='"+i+"'");
 
                         switchOn(leftLeg);
-                        //mBlue.sendMessage("left leg");
+                        mBlue.sendMessage("left leg");
                     }else if(txtText.getText().equals("right leg")){
                         i = 7;
                         rl = rl + 1;
@@ -214,11 +218,28 @@ public class MainActivity extends Activity {
                                 "' WHERE id='"+i+"'");
 
                         switchOn(rightLeg);
-                        //mBlue.sendMessage("right leg");
+                        mBlue.sendMessage("right leg");
                     }
                 }
                 break;
             }
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+    }
+
+    //Fires after the OnStop() state
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            db.delete("bodyparts", null, null);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
