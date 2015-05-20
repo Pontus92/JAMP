@@ -127,7 +127,9 @@ public class Main_Bluetooth extends Activity {
             if(BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 btArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                arrayListBluetoothDevices.add(device);
                 btArrayAdapter.notifyDataSetChanged();
+
             }
         }};
 
@@ -172,7 +174,7 @@ public class Main_Bluetooth extends Activity {
             if(mBlue.Connect()) {
                 Log.i("Log", "The bond is created");
             }else{
-
+                Log.i("Log", "Couldn't connect to: " + bdDevice.toString());
             }
         }
     }

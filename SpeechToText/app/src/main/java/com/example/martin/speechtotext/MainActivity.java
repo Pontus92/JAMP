@@ -56,8 +56,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mBlue = BluetoothArduino.getInstance("ExampleRobot");
-
         head = (Switch) findViewById(R.id.headSwitch);
         leftArm = (Switch) findViewById(R.id.leftArmSwitch);
         rightArm = (Switch) findViewById(R.id.rightArmSwitch);
