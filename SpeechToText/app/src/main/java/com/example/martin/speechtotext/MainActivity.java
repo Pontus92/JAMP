@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Gravity;
@@ -84,6 +85,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                //startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                 startActivityForResult(btActivity, 2);
             }
         });
@@ -153,24 +155,27 @@ public class MainActivity extends Activity {
     public void btDevice(String device){
         txtText.setText(device);
         mBlue = BluetoothArduino.getInstance(device);
-        mBlue.Connect();
+
         final ViewGroup layout = (ViewGroup) blueBtn.getParent();
-        if(layout != null){
-            layout.removeView(blueBtn);
-        }
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER_HORIZONTAL;
         final TextView btStatus = new TextView(this);
-        layout.addView(btStatus, lp);
-        btStatus.setText("Connected");
-        btStatus.setTextColor(Color.WHITE);
-
         final Button dcButton = new Button(this);
-        layout.addView(dcButton, lp);
-        dcButton.setText("Disconnect");
 
+        if(mBlue.Connect()) {
+            if (layout != null) {
+                layout.removeView(blueBtn);
+            }
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.gravity = Gravity.CENTER_HORIZONTAL;
+
+            layout.addView(btStatus, lp);
+            btStatus.setText("Connected to: " + device);
+            btStatus.setTextColor(Color.WHITE);
+
+            layout.addView(dcButton, lp);
+            dcButton.setText("Disconnect");
+        }
         dcButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -181,8 +186,6 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        //blueBtn.setText("Connected");
-        //blueBtn.setClickable(false);
     }
 
     @Override

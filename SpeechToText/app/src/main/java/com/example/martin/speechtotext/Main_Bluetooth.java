@@ -36,6 +36,8 @@ public class Main_Bluetooth extends Activity {
     ListItemClicked listItemClicked;
     ArrayList<BluetoothDevice> arrayListBluetoothDevices = null;
     BluetoothDevice bdDevice;
+    ArrayList<String> arrayListNameAndAddress = null;
+    String deviceString;
 
     /** Called when the activity is first created. */
     @Override
@@ -49,6 +51,7 @@ public class Main_Bluetooth extends Activity {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         arrayListBluetoothDevices = new ArrayList<>();
+        arrayListNameAndAddress = new ArrayList<>();
         listItemClicked = new ListItemClicked();
 
         listDevicesFound = (ListView)findViewById(R.id.devicesfound);
@@ -127,6 +130,7 @@ public class Main_Bluetooth extends Activity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 btArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 arrayListBluetoothDevices.add(device);
+                arrayListNameAndAddress.add(device.getName() + " " + device.getAddress());
                 btArrayAdapter.notifyDataSetChanged();
 
             }
@@ -138,10 +142,13 @@ public class Main_Bluetooth extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // TODO Auto-generated method stub
             bdDevice = arrayListBluetoothDevices.get(position);
+            deviceString = arrayListNameAndAddress.get(position);
+
+            String[] nameAndAddress = deviceString.split(" ");
             //bdClass = arrayListBluetoothDevices.get(position);
-            Log.i("Log", "The device : " + bdDevice.toString());
+            Log.i("Log", "The device : " + nameAndAddress[0] + " [" + nameAndAddress[1] + "]");
             Intent _result = new Intent();
-            _result.setData(Uri.parse(bdDevice.toString()));
+            _result.setData(Uri.parse(nameAndAddress[0]));
             setResult(RESULT_OK, _result);
             finish();
             //onBackPressed();
