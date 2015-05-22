@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -85,7 +86,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                 startActivityForResult(btActivity, 2);
             }
         });
@@ -180,6 +180,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(layout != null){
+                    //mBlue.Disconnect("FireFly");
                     layout.removeView(btStatus);
                     layout.removeView(dcButton);
                     layout.addView(blueBtn);
@@ -220,7 +221,7 @@ public class MainActivity extends Activity {
                             rightArm.setChecked(true);
                             leftLeg.setChecked(true);
                             rightLeg.setChecked(true);
-                            mBlue.sendMessage("lights on");
+                            mBlue.sendMessage("lightson#");
                         } else if (txtText.getText().equals("lights off")) {
                             i = 2;
                             lOff = lOff + 1;
@@ -232,7 +233,7 @@ public class MainActivity extends Activity {
                             rightArm.setChecked(false);
                             leftLeg.setChecked(false);
                             rightLeg.setChecked(false);
-                            mBlue.sendMessage("lights off");
+                            mBlue.sendMessage("lightsoff#");
                         } else if (txtText.getText().equals("head")) {
                             i = 3;
                             if(!head.isChecked()) {
@@ -241,7 +242,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(head);
-                            mBlue.sendMessage("head");
+                            mBlue.sendMessage("head#");
                         } else if (txtText.getText().equals("left arm")) {
                             i = 4;
                             if(!leftArm.isChecked()) {
@@ -250,7 +251,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(leftArm);
-                            mBlue.sendMessage("left arm");
+                            mBlue.sendMessage("leftarm#");
                         } else if (txtText.getText().equals("right arm")) {
                             i = 5;
                             if(!rightArm.isChecked()) {
@@ -259,7 +260,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(rightArm);
-                            mBlue.sendMessage("right arm");
+                            mBlue.sendMessage("rightarm#");
                         } else if (txtText.getText().equals("left leg")) {
                             i = 6;
                             if(!leftLeg.isChecked()) {
@@ -268,7 +269,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(leftLeg);
-                            mBlue.sendMessage("left leg");
+                            mBlue.sendMessage("leftleg#");
                         } else if (txtText.getText().equals("right leg")) {
                             i = 7;
                             if(!rightLeg.isChecked()) {
@@ -277,7 +278,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(rightLeg);
-                            mBlue.sendMessage("right leg");
+                            mBlue.sendMessage("rightleg#");
                         }
                     }
                     break;

@@ -93,7 +93,10 @@ public class BluetoothArduino extends Thread {
 
             UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
             mBlueSocket = mBlueRobo.createRfcommSocketToServiceRecord(uuid);
-            mBlueSocket.connect();
+            if(!mBlueSocket.isConnected()) {
+                Thread.sleep(300);
+                mBlueSocket.connect();
+            }
             mOut = mBlueSocket.getOutputStream();
             mIn = mBlueSocket.getInputStream();
             connected = true;
@@ -179,9 +182,17 @@ public class BluetoothArduino extends Thread {
    }
     
     public void sendMessage(String msg){
+        String bytes;
+        String index = "";
+        byte [] msgBuffer = msg.getBytes();
+        int i = 0;
         try {
             if(connected) {
-                mOut.write(msg.getBytes());
+                mOut.write(msgBuffer);
+                i = i + 1;
+                index = String.valueOf(i);
+                bytes = new String(msg.getBytes());
+                Log.i(index, bytes);
             }
 
         } catch (IOException e){
@@ -202,6 +213,17 @@ public class BluetoothArduino extends Thread {
     }
     public char getDelimiter(){
         return DELIMITER;
+    }
+
+    public void Disconnect(String name){
+        try {
+            mIn.close();
+            mOut.close();
+            mBlueSocket.close();
+            Log.i("DC", "Disconnected from: " + name);
+        }catch (Exception e){
+            Log.i("DC", "Couldn't disconnect from: " + name);
+        }
     }
 
 }

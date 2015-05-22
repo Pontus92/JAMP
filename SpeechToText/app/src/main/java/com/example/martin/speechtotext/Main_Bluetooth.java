@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -145,6 +146,9 @@ public class Main_Bluetooth extends Activity {
             deviceString = arrayListNameAndAddress.get(position);
 
             String[] nameAndAddress = deviceString.split(" ");
+
+            bdDevice.createBond();
+
             //bdClass = arrayListBluetoothDevices.get(position);
             Log.i("Log", "The device : " + nameAndAddress[0] + " [" + nameAndAddress[1] + "]");
             Intent _result = new Intent();
