@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
                             rightArm.setChecked(true);
                             leftLeg.setChecked(true);
                             rightLeg.setChecked(true);
-                            mBlue.sendMessage("lightson#");
+                            mBlue.sendMessage("1");
                         } else if (txtText.getText().equals("lights off")) {
                             i = 2;
                             lOff = lOff + 1;
@@ -233,7 +233,7 @@ public class MainActivity extends Activity {
                             rightArm.setChecked(false);
                             leftLeg.setChecked(false);
                             rightLeg.setChecked(false);
-                            mBlue.sendMessage("lightsoff#");
+                            mBlue.sendMessage("2");
                         } else if (txtText.getText().equals("head")) {
                             i = 3;
                             if(!head.isChecked()) {
@@ -242,7 +242,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(head);
-                            mBlue.sendMessage("head#");
+                            mBlue.sendMessage("3");
                         } else if (txtText.getText().equals("left arm")) {
                             i = 4;
                             if(!leftArm.isChecked()) {
@@ -251,7 +251,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(leftArm);
-                            mBlue.sendMessage("leftarm#");
+                            mBlue.sendMessage("7");
                         } else if (txtText.getText().equals("right arm")) {
                             i = 5;
                             if(!rightArm.isChecked()) {
@@ -260,7 +260,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(rightArm);
-                            mBlue.sendMessage("rightarm#");
+                            mBlue.sendMessage("4");
                         } else if (txtText.getText().equals("left leg")) {
                             i = 6;
                             if(!leftLeg.isChecked()) {
@@ -269,7 +269,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(leftLeg);
-                            mBlue.sendMessage("leftleg#");
+                            mBlue.sendMessage("6");
                         } else if (txtText.getText().equals("right leg")) {
                             i = 7;
                             if(!rightLeg.isChecked()) {
@@ -278,7 +278,7 @@ public class MainActivity extends Activity {
                                         "' WHERE id='" + i + "'");
                             }
                             switchOn(rightLeg);
-                            mBlue.sendMessage("rightleg#");
+                            mBlue.sendMessage("5");
                         }
                     }
                     break;
