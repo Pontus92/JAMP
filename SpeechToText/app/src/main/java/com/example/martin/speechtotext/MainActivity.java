@@ -59,6 +59,12 @@ public class MainActivity extends Activity {
     private int ll = 0;
     private int i = 1;
 
+    private boolean headIsChecked = false;
+    private boolean rightArmIsChecked = false;
+    private boolean leftArmIsChecked = false;
+    private boolean rightLegIsChecked = false;
+    private boolean leftLegIsChecked = false;
+
     private String device;
 
     @Override
@@ -117,6 +123,35 @@ public class MainActivity extends Activity {
         });
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("Head", head.isChecked());
+        savedInstanceState.putBoolean("Right Arm", rightArm.isChecked());
+        savedInstanceState.putBoolean("Left Arm", leftArm.isChecked());
+        savedInstanceState.putBoolean("Right Leg", rightLeg.isChecked());
+        savedInstanceState.putBoolean("Left Leg", leftLeg.isChecked());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        headIsChecked = savedInstanceState.getBoolean("Head");
+        rightArmIsChecked = savedInstanceState.getBoolean("Right Arm");
+        leftArmIsChecked = savedInstanceState.getBoolean("Left Arm");
+        rightLegIsChecked = savedInstanceState.getBoolean("Right Leg");
+        leftLegIsChecked = savedInstanceState.getBoolean("Left Leg");
+    }
+
+    protected void onResume(){
+        super.onResume();
+        head.setChecked(headIsChecked);
+        rightArm.setChecked(rightArmIsChecked);
+        leftArm.setChecked(leftArmIsChecked);
+        rightLeg.setChecked(rightLegIsChecked);
+        leftLeg.setChecked(leftLegIsChecked);
+    }
+
     public void onStart(){
         super.onStart();
         db.execSQL("INSERT INTO bodyparts VALUES('"+1+
@@ -153,8 +188,8 @@ public class MainActivity extends Activity {
     }
 
     public void btDevice(String device){
-        txtText.setText(device);
-        mBlue = BluetoothArduino.getInstance(device);
+        txtText.setText("");
+        mBlue = new BluetoothArduino(device);
 
         final ViewGroup layout = (ViewGroup) blueBtn.getParent();
         final TextView btStatus = new TextView(this);
@@ -175,12 +210,14 @@ public class MainActivity extends Activity {
 
             layout.addView(dcButton, lp);
             dcButton.setText("Disconnect");
+        }else{
+            txtText.setText("Error in connecting, try again!");
         }
-        dcButton.setOnClickListener(new View.OnClickListener(){
+        dcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(layout != null){
-                    //mBlue.Disconnect("FireFly");
+                if (layout != null) {
+                    mBlue.Disconnect("FireFly-11AF");
                     layout.removeView(btStatus);
                     layout.removeView(dcButton);
                     layout.addView(blueBtn);
@@ -221,6 +258,13 @@ public class MainActivity extends Activity {
                             rightArm.setChecked(true);
                             leftLeg.setChecked(true);
                             rightLeg.setChecked(true);
+
+                            headIsChecked = true;
+                            rightArmIsChecked = true;
+                            leftArmIsChecked = true;
+                            rightLegIsChecked = true;
+                            leftLegIsChecked = true;
+
                             mBlue.sendMessage("1");
                         } else if (txtText.getText().equals("lights off")) {
                             i = 2;
@@ -233,6 +277,13 @@ public class MainActivity extends Activity {
                             rightArm.setChecked(false);
                             leftLeg.setChecked(false);
                             rightLeg.setChecked(false);
+
+                            headIsChecked = false;
+                            rightArmIsChecked = false;
+                            leftArmIsChecked = false;
+                            rightLegIsChecked = false;
+                            leftLegIsChecked = false;
+
                             mBlue.sendMessage("2");
                         } else if (txtText.getText().equals("head")) {
                             i = 3;
@@ -241,7 +292,13 @@ public class MainActivity extends Activity {
                                 db.execSQL("UPDATE bodyparts SET bodypart='" + "head" + "',used='" + h +
                                         "' WHERE id='" + i + "'");
                             }
-                            switchOn(head);
+                            head.toggle();
+                            if(headIsChecked == false){
+                                headIsChecked = true;
+                            }else{
+                                headIsChecked = false;
+                            }
+
                             mBlue.sendMessage("3");
                         } else if (txtText.getText().equals("left arm")) {
                             i = 4;
@@ -250,7 +307,13 @@ public class MainActivity extends Activity {
                                 db.execSQL("UPDATE bodyparts SET bodypart='" + "left arm" + "',used='" + la +
                                         "' WHERE id='" + i + "'");
                             }
-                            switchOn(leftArm);
+                            leftArm.toggle();
+                            if(leftArmIsChecked == false){
+                                leftArmIsChecked = true;
+                            }else{
+                                leftArmIsChecked = false;
+                            }
+
                             mBlue.sendMessage("7");
                         } else if (txtText.getText().equals("right arm")) {
                             i = 5;
@@ -259,7 +322,13 @@ public class MainActivity extends Activity {
                                 db.execSQL("UPDATE bodyparts SET bodypart='" + "right arm" + "',used='" + ra +
                                         "' WHERE id='" + i + "'");
                             }
-                            switchOn(rightArm);
+                            rightArm.toggle();
+                            if(rightArmIsChecked == false){
+                                rightArmIsChecked = true;
+                            }else{
+                                rightArmIsChecked = false;
+                            }
+
                             mBlue.sendMessage("4");
                         } else if (txtText.getText().equals("left leg")) {
                             i = 6;
@@ -268,7 +337,13 @@ public class MainActivity extends Activity {
                                 db.execSQL("UPDATE bodyparts SET bodypart='" + "left leg" + "',used='" + ll +
                                         "' WHERE id='" + i + "'");
                             }
-                            switchOn(leftLeg);
+                            leftLeg.toggle();
+                            if(leftLegIsChecked == false){
+                                leftLegIsChecked = true;
+                            }else{
+                                leftLegIsChecked = false;
+                            }
+
                             mBlue.sendMessage("6");
                         } else if (txtText.getText().equals("right leg")) {
                             i = 7;
@@ -277,7 +352,13 @@ public class MainActivity extends Activity {
                                 db.execSQL("UPDATE bodyparts SET bodypart='" + "right leg" + "',used='" + rl +
                                         "' WHERE id='" + i + "'");
                             }
-                            switchOn(rightLeg);
+                            rightLeg.toggle();
+                            if(rightLegIsChecked == false){
+                                rightLegIsChecked = true;
+                            }else{
+                                rightLegIsChecked = false;
+                            }
+
                             mBlue.sendMessage("5");
                         }
                     }
@@ -298,11 +379,18 @@ public class MainActivity extends Activity {
         }
     }
 
-    //Fires after the OnStop() state
     @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
+            if(!mBlue.Connect()) {
+                mBlue.Connect();
+                mBlue.sendMessage("2");
+                mBlue.Disconnect("FireFly-11AF");
+            }else{
+                mBlue.sendMessage("2");
+                mBlue.Disconnect("FireFly-11AF");
+            }
             db.delete("bodyparts", null, null);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -334,9 +422,5 @@ public class MainActivity extends Activity {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.show();
-    }
-
-    private void switchOn(View v){
-        ((Switch) v).toggle();
     }
 }

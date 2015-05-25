@@ -20,29 +20,16 @@ public class BluetoothArduino extends Thread {
     private BluetoothAdapter mBlueAdapter = null;
     private BluetoothSocket mBlueSocket = null;
     private BluetoothDevice mBlueRobo = null;
+
     OutputStream mOut;
     InputStream mIn;
     private boolean robotFound = false;
     private boolean connected = false;
-    private int REQUEST_BLUE_ATIVAR = 10;
     private String robotName;
     private List<String> mMessages = new ArrayList<String>();
     private String TAG = "BluetoothConnector";
-    private char DELIMITER = '#';
 
-    private static BluetoothArduino __blue = null;
-
-    public static BluetoothArduino getInstance(String n){
-        return __blue == null ? new BluetoothArduino(n) : __blue;
-    }
-
-    public static BluetoothArduino getInstance(){
-        return __blue == null ? new BluetoothArduino() : __blue;
-    }
-
-
-    private  BluetoothArduino(String Name){
-        __blue = this;
+    public BluetoothArduino(String Name){
         try {
             for(int i = 0; i < 2048; i++){
                 mMessages.add("");
@@ -77,10 +64,6 @@ public class BluetoothArduino extends Thread {
 
     }
 
-    BluetoothArduino(){
-        this("Arduino-Robot");
-    }
-    
     public boolean isBluetoothEnabled(){
       return mBlueAdapter.isEnabled();
     }
@@ -111,90 +94,11 @@ public class BluetoothArduino extends Thread {
         }
     }
 
-    public void run(){
-
-        while (true) {
-            if(connected) {
-                try {
-                    byte ch, buffer[] = new byte[1024];
-                    int i = 0;
-
-                    String s = "";
-                    while((ch=(byte)mIn.read()) != DELIMITER){
-                        buffer[i++] = ch;
-                    }
-                    buffer[i] = '\0';
-
-                    final String msg = new String(buffer);
-
-                    MessageReceived(msg.trim());
-                    LogMessage("[Blue]:" + msg);
-
-                } catch (IOException e) {
-                    LogError("->[#]Failed to receive message: " + e.getMessage());
-                }
-            }
-        }
-    }
-
-    private void MessageReceived(String msg){
-        try {
-
-            mMessages.add(msg);
-            try {
-                this.notify();
-            }catch (IllegalMonitorStateException e){
-                //
-            }
-        } catch (Exception e){
-            LogError("->[#] Failed to receive message: " + e.getMessage());
-        }
-    }
-
-    public boolean hasMessage(int i){
-        try{
-            String s = mMessages.get(i);
-            if(s.length() > 0)
-                return true;
-            else
-                return false;
-        } catch (Exception e){
-            return false;
-        }
-    }
-
-    public String getMessage(int i){
-        return mMessages.get(i);
-    }
-    
-    public void clearMessages(){
-      mMessages.clear(); 
-    }
-    
-   public int countMessages(){
-     return mMessages.size();
-   }
-
-   public String getLastMessage(){
-     if(countMessages() == 0)
-       return "";
-     return mMessages.get(countMessages()-1);
-   }
-    
     public void sendMessage(String msg){
-        String bytes;
-        String index = "";
-        byte [] msgBuffer = msg.getBytes();
-        int i = 0;
         try {
             if(connected) {
-                mOut.write(msgBuffer);
-                i = i + 1;
-                index = String.valueOf(i);
-                bytes = new String(msg.getBytes());
-                Log.i(index, bytes);
+                mOut.write(msg.getBytes());
             }
-
         } catch (IOException e){
             LogError("->[#]Error while sending message: " + e.getMessage());
         }
@@ -206,13 +110,6 @@ public class BluetoothArduino extends Thread {
     
     private void LogError(String msg){
       Log.e(TAG, msg);
-    }
-     
-    public void setDelimiter(char d){
-        DELIMITER = d;
-    }
-    public char getDelimiter(){
-        return DELIMITER;
     }
 
     public void Disconnect(String name){

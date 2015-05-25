@@ -40,7 +40,6 @@ public class Main_Bluetooth extends Activity {
     ArrayList<String> arrayListNameAndAddress = null;
     String deviceString;
 
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,23 +148,11 @@ public class Main_Bluetooth extends Activity {
 
             bdDevice.createBond();
 
-            //bdClass = arrayListBluetoothDevices.get(position);
             Log.i("Log", "The device : " + nameAndAddress[0] + " [" + nameAndAddress[1] + "]");
             Intent _result = new Intent();
             _result.setData(Uri.parse(nameAndAddress[0]));
             setResult(RESULT_OK, _result);
             finish();
-            //onBackPressed();
-            /*
-             * here below we can do pairing without calling the callthread(), we can directly call the
-             * connect(). but for the safer side we must usethe threading object.
-             */
-            /*mBlue = BluetoothArduino.getInstance(bdDevice.toString());
-            if(mBlue.Connect()) {
-                Log.i("Log", "The bond is created");
-            }else{
-                Log.i("Log", "Couldn't connect to: " + bdDevice.toString());
-            }*/
         }
     }
 }
