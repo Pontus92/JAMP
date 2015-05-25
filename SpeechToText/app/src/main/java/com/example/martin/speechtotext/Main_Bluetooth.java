@@ -80,6 +80,7 @@ public class Main_Bluetooth extends Activity {
         // TODO Auto-generated method stub
         super.onDestroy();
         unregisterReceiver(ActionFoundReceiver);
+        finish();
     }
 
     private void CheckBlueToothState(){
