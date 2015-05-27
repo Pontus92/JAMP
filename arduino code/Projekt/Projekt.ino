@@ -44,7 +44,7 @@ void loop() {
   Serial.flush();
   if(Serial.available()) { //Check if there is an available byte to read
     while(1){ 
-      delay(10); //Delay added to make thing stable
+      delay(10); 
       command = Serial.read(); //Conduct a serial read
       break;
       }
